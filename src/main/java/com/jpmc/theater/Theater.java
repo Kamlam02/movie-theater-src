@@ -3,24 +3,22 @@ package com.jpmc.theater;
 import com.jpmc.theater.domain.Customer;
 import com.jpmc.theater.domain.Reservation;
 import com.jpmc.theater.domain.Showing;
-import com.jpmc.theater.service.Schedule;
+import com.jpmc.theater.service.MovieScheduleHandler;
 import com.jpmc.theater.utils.LocalDateProvider;
 
 import java.util.List;
 
 public class Theater {
-    private final LocalDateProvider provider;
-    private final List<Showing> schedule;
+    private final List<Showing> showings;
 
-    public Theater(LocalDateProvider provider) {
-        this.provider = provider;
-        this.schedule = Schedule.loader(provider);
+    public Theater(LocalDateProvider localDateProvider) {
+        this.showings = MovieScheduleHandler.initShowings(localDateProvider);
     }
 
     public Reservation reserve(Customer customer, int sequence, int howManyTickets) {
         Showing showing;
         try {
-            showing = schedule.get(sequence - 1);
+            showing = showings.get(sequence - 1);
         } catch (RuntimeException ex) {
             ex.printStackTrace();
             throw new IllegalStateException("not able to find any showing for given sequence " + sequence);
@@ -29,7 +27,9 @@ public class Theater {
     }
 
     public void printSchedule() {
-        new Schedule().print(provider,schedule);
+        MovieScheduleHandler movieScheduleHandler = new MovieScheduleHandler();
+        movieScheduleHandler.printShowingsText(showings);
+        movieScheduleHandler.printShowingsJson(showings);
     }
 
     public static void main(String[] args) {
