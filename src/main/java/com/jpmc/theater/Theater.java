@@ -1,5 +1,7 @@
 package com.jpmc.theater;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,9 +16,9 @@ public class Theater {
     public Theater(LocalDateProvider provider) {
         this.provider = provider;
 
-        Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), 12.5, 1);
-        Movie turningRed = new Movie("Turning Red", Duration.ofMinutes(85), 11, 0);
-        Movie theBatMan = new Movie("The Batman", Duration.ofMinutes(95), 9, 0);
+        Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), BigDecimal.valueOf(12.5), 1);
+        Movie turningRed = new Movie("Turning Red", Duration.ofMinutes(85), BigDecimal.valueOf(11), 0);
+        Movie theBatMan = new Movie("The Batman", Duration.ofMinutes(95), BigDecimal.valueOf(9), 0);
         schedule = List.of(
                 new Showing(turningRed, 1, LocalDateTime.of(provider.currentDate(), LocalTime.of(9, 0))),
                 new Showing(spiderMan, 2, LocalDateTime.of(provider.currentDate(), LocalTime.of(11, 0))),
@@ -45,7 +47,7 @@ public class Theater {
         System.out.println(provider.currentDate());
         System.out.println("===================================================");
         schedule.forEach(s ->
-                System.out.println(s.getSequenceOfTheDay() + ": " + s.getStartTime() + " " + s.getMovie().getTitle() + " " + humanReadableFormat(s.getMovie().getRunningTime()) + " $" + s.getMovieFee())
+                System.out.println(s.getSequenceOfTheDay() + ": " + s.getStartTime() + " " + s.getMovie().getTitle() + " " + humanReadableFormat(s.getMovie().getRunningTime()) + " $" + s.getMovieFee().setScale(2, RoundingMode.UP))
         );
         System.out.println("===================================================");
     }

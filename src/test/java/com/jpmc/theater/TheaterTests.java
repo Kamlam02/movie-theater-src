@@ -1,6 +1,9 @@
 package com.jpmc.theater;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -11,7 +14,7 @@ public class TheaterTests {
         Customer john = new Customer("John Doe", "id-12345");
         Reservation reservation = theater.reserve(john, 2, 4);
 //        System.out.println("You have to pay " + reservation.getTotalFee());
-        assertEquals(reservation.totalFee(), 50);
+        Assertions.assertEquals(reservation.totalFee(), BigDecimal.valueOf(50.0));
     }
 
     @Test

@@ -1,18 +1,17 @@
 package com.jpmc.theater;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.util.Objects;
 
 public class Movie {
-    private static int MOVIE_CODE_SPECIAL = 1;
-
-    private String title;
+    private final String title;
     private String description;
-    private Duration runningTime;
-    private double ticketPrice;
-    private int specialCode;
+    private final Duration runningTime;
+    private final BigDecimal ticketPrice;
+    private final int specialCode;
 
-    public Movie(String title, Duration runningTime, double ticketPrice, int specialCode) {
+    public Movie(String title, Duration runningTime, BigDecimal ticketPrice, int specialCode) {
         this.title = title;
         this.runningTime = runningTime;
         this.ticketPrice = ticketPrice;
@@ -27,33 +26,37 @@ public class Movie {
         return runningTime;
     }
 
-    public double getTicketPrice() {
+    public BigDecimal getTicketPrice() {
         return ticketPrice;
     }
 
-    public double calculateTicketPrice(Showing showing) {
-        return ticketPrice - getDiscount(showing.getSequenceOfTheDay());
+    public BigDecimal calculateTicketPrice(Showing showing) {
+        return ticketPrice.subtract(getDiscount(showing.getSequenceOfTheDay()));
     }
 
-    private double getDiscount(int showSequence) {
-        double specialDiscount = 0;
-        if (MOVIE_CODE_SPECIAL == specialCode) {
-            specialDiscount = ticketPrice * 0.2;  // 20% discount for special movie
-        }
+    private BigDecimal getDiscount(int showSequence) {
+        BigDecimal specialDiscount = getSpecialDiscount();
+        BigDecimal sequenceDiscount = getSequenceDiscount(showSequence);
+        return specialDiscount.max(sequenceDiscount);}
 
-        double sequenceDiscount = 0;
+    private BigDecimal getSpecialDiscount() {
+        int MOVIE_CODE_SPECIAL = 1;
+        boolean isSpecialMovie = MOVIE_CODE_SPECIAL == specialCode;
+        BigDecimal specialDiscount = BigDecimal.ZERO;
+        if (isSpecialMovie) {
+            specialDiscount = ticketPrice.multiply(BigDecimal.valueOf(0.2));  // 20% discount for special movie
+        }
+        return specialDiscount;
+    }
+
+    private static BigDecimal getSequenceDiscount(int showSequence) {
+        BigDecimal sequenceDiscount = BigDecimal.ZERO;
         if (showSequence == 1) {
-            sequenceDiscount = 3; // $3 discount for 1st show
+            sequenceDiscount = BigDecimal.valueOf(3); // $3 discount for 1st show
         } else if (showSequence == 2) {
-
-            sequenceDiscount = 2; // $2 discount for 2nd show
+            sequenceDiscount = BigDecimal.valueOf(2); // $2 discount for 2nd show
         }
-//        else {
-//            throw new IllegalArgumentException("failed exception");
-//        }
-
-        // biggest discount wins
-        return specialDiscount > sequenceDiscount ? specialDiscount : sequenceDiscount;
+        return sequenceDiscount;
     }
 
     @Override
@@ -61,7 +64,7 @@ public class Movie {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Movie movie = (Movie) o;
-        return Double.compare(movie.ticketPrice, ticketPrice) == 0
+        return movie.ticketPrice.compareTo(ticketPrice) == 0
                 && Objects.equals(title, movie.title)
                 && Objects.equals(description, movie.description)
                 && Objects.equals(runningTime, movie.runningTime)
