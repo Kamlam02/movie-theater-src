@@ -1,10 +1,12 @@
 package com.jpmc.theater;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class Schedule {
     public static List<Showing> loader(LocalDateProvider provider) {
@@ -22,5 +24,30 @@ public class Schedule {
                 new Showing(spiderMan, 8, LocalDateTime.of(provider.currentDate(), LocalTime.of(21, 10))),
                 new Showing(theBatMan, 9, LocalDateTime.of(provider.currentDate(), LocalTime.of(23, 0)))
         );
+    }
+
+    public void print(LocalDateProvider provider, List<Showing> schedule) {
+        String bar = "===================================================";
+        System.out.println(provider.currentDate());
+        System.out.println(bar);
+        schedule.forEach(s ->
+                System.out.println(s.getSequenceOfTheDay() + ": "
+                        + s.getStartTime() + " "
+                        + s.getMovie().getTitle() + " "
+                        + humanReadableFormat(s.getMovie().getRunningTime())
+                        + " $"
+                        + s.getMovieFee().setScale(2, RoundingMode.UP))
+        );
+        System.out.println(bar);
+    }
+
+    private String humanReadableFormat(Duration duration) {
+        long hour = duration.toHours();
+        long remainingMin = duration.toMinutes() - TimeUnit.HOURS.toMinutes(duration.toHours());
+        return String.format("(%s hour%s %s minute%s)", hour, handlePlural(hour), remainingMin, handlePlural(remainingMin));
+    }
+
+    private String handlePlural(long value) {
+        return value == 1 ? "" : "s";
     }
 }
