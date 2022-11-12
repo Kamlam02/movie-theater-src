@@ -1,6 +1,6 @@
 package com.jpmc.theater.domain;
 
-import com.jpmc.theater.DiscountService;
+import com.jpmc.theater.service.DiscountService;
 import lombok.Getter;
 
 import java.math.BigDecimal;

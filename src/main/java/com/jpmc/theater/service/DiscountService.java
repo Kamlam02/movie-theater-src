@@ -1,4 +1,4 @@
-package com.jpmc.theater;
+package com.jpmc.theater.service;
 
 import com.jpmc.theater.domain.Showing;
 

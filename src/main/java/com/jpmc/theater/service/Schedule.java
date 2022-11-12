@@ -1,7 +1,8 @@
-package com.jpmc.theater.utils;
+package com.jpmc.theater.service;
 
 import com.jpmc.theater.domain.Movie;
 import com.jpmc.theater.domain.Showing;
+import com.jpmc.theater.utils.LocalDateProvider;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
