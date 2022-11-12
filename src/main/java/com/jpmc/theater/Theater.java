@@ -68,7 +68,7 @@ public class Theater {
     }
 
     public static void main(String[] args) {
-        Theater theater = new Theater(LocalDateProvider.singleton());
+        Theater theater = new Theater(LocalDateProvider.getInstance());
         theater.printSchedule();
     }
 }
