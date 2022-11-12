@@ -1,5 +1,8 @@
 package com.jpmc.theater;
 
+import com.jpmc.theater.domain.Customer;
+import com.jpmc.theater.domain.Reservation;
+import com.jpmc.theater.utils.LocalDateProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -9,7 +12,7 @@ public class TheaterTests {
     @Test
     void totalFeeForCustomer() {
         Theater theater = new Theater(LocalDateProvider.getInstance());
-        Customer john = new Customer("John Doe", "id-12345");
+        Customer john = new Customer("id-12345", "John Doe");
         Reservation reservation = theater.reserve(john, 2, 4);
         Assertions.assertEquals(reservation.totalFee(), BigDecimal.valueOf(50.0));
     }

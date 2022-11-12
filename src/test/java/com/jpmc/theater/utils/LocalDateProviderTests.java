@@ -1,4 +1,4 @@
-package com.jpmc.theater;
+package com.jpmc.theater.utils;
 
 import org.junit.jupiter.api.Test;
 

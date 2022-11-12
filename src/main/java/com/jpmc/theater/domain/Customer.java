@@ -1,14 +1,15 @@
-package com.jpmc.theater;
+package com.jpmc.theater.domain;
+
+import lombok.Getter;
 
 import java.util.Objects;
 
+@Getter
 public class Customer {
-
+    private final String id;
     private final String name;
 
-    private final String id;
-
-    public Customer(String name, String id) {
+    public Customer(String id, String name) {
         this.id = id; // NOTE - id is not used anywhere at the moment
         this.name = name;
     }

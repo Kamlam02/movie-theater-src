@@ -1,4 +1,4 @@
-package com.jpmc.theater;
+package com.jpmc.theater.domain;
 
 import java.math.BigDecimal;
 

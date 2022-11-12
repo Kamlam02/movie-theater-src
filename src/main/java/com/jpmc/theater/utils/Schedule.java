@@ -1,4 +1,7 @@
-package com.jpmc.theater;
+package com.jpmc.theater.utils;
+
+import com.jpmc.theater.domain.Movie;
+import com.jpmc.theater.domain.Showing;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -32,7 +35,7 @@ public class Schedule {
         System.out.println(bar);
         schedule.forEach(s ->
                 System.out.println(s.getSequenceOfTheDay() + ": "
-                        + s.getStartTime() + " "
+                        + s.getShowStartTime() + " "
                         + s.getMovie().getTitle() + " "
                         + humanReadableFormat(s.getMovie().getRunningTime())
                         + " $"

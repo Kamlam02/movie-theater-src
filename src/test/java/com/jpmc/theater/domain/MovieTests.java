@@ -1,4 +1,4 @@
-package com.jpmc.theater;
+package com.jpmc.theater.domain;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

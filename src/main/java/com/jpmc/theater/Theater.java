@@ -1,5 +1,11 @@
 package com.jpmc.theater;
 
+import com.jpmc.theater.domain.Customer;
+import com.jpmc.theater.domain.Reservation;
+import com.jpmc.theater.domain.Showing;
+import com.jpmc.theater.utils.LocalDateProvider;
+import com.jpmc.theater.utils.Schedule;
+
 import java.util.List;
 
 public class Theater {

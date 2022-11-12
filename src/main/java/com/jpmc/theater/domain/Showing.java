@@ -1,8 +1,11 @@
-package com.jpmc.theater;
+package com.jpmc.theater.domain;
+
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Getter
 public class Showing {
     private final Movie movie;
     private final int sequenceOfTheDay;
@@ -12,18 +15,6 @@ public class Showing {
         this.movie = movie;
         this.sequenceOfTheDay = sequenceOfTheDay;
         this.showStartTime = showStartTime;
-    }
-
-    public Movie getMovie() {
-        return movie;
-    }
-
-    public LocalDateTime getStartTime() {
-        return showStartTime;
-    }
-
-    public boolean isSequence(int sequence) {
-        return this.sequenceOfTheDay == sequence;
     }
 
     public BigDecimal getMovieFee() {
