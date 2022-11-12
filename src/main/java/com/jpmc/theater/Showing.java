@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Showing {
-    private Movie movie;
-    private int sequenceOfTheDay;
-    private LocalDateTime showStartTime;
+    private final Movie movie;
+    private final int sequenceOfTheDay;
+    private final LocalDateTime showStartTime;
 
     public Showing(Movie movie, int sequenceOfTheDay, LocalDateTime showStartTime) {
         this.movie = movie;
