@@ -1,6 +1,5 @@
 package com.jpmc.theater.domain;
 
-import com.jpmc.theater.service.DiscountService;
 import lombok.Getter;
 
 import java.math.BigDecimal;
@@ -20,10 +19,6 @@ public class Movie {
         this.runningTime = runningTime;
         this.ticketPrice = ticketPrice;
         this.specialCode = specialCode;
-    }
-
-    public BigDecimal calculateTicketPrice(Showing showing) {
-        return ticketPrice.subtract(DiscountService.getDiscount(showing));
     }
 
     @Override

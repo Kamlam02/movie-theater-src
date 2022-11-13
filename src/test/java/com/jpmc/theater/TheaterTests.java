@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class TheaterTests {
     @Test
@@ -14,7 +15,7 @@ public class TheaterTests {
         Theater theater = new Theater(LocalDateProvider.getInstance());
         Customer john = new Customer("id-12345", "John Doe");
         Reservation reservation = theater.reserve(john, 2, 4);
-        Assertions.assertEquals(reservation.totalFee(), BigDecimal.valueOf(50.0));
+        Assertions.assertEquals(reservation.getTotalFee(), BigDecimal.valueOf(40).setScale(2, RoundingMode.UP));
     }
 
     @Test

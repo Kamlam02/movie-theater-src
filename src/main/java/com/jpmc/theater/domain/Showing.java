@@ -24,8 +24,4 @@ public class Showing {
     public int getSequenceOfTheDay() {
         return sequenceOfTheDay;
     }
-
-    private BigDecimal calculateFee(int audienceCount) {
-        return movie.calculateTicketPrice(this).multiply(BigDecimal.valueOf(audienceCount));
-    }
 }

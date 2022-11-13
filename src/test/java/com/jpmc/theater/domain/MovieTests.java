@@ -1,5 +1,6 @@
 package com.jpmc.theater.domain;
 
+import com.jpmc.theater.service.TicketPricingService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -15,6 +16,6 @@ public class MovieTests {
     void specialMovieWith20PercentDiscount() {
         Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), BigDecimal.valueOf(12.5), 1);
         Showing showing = new Showing(spiderMan, 5, LocalDateTime.of(LocalDate.now(), LocalTime.now()));
-        Assertions.assertEquals(BigDecimal.valueOf(10).setScale(2, RoundingMode.UP), spiderMan.calculateTicketPrice(showing));
+        Assertions.assertEquals(BigDecimal.valueOf(10).setScale(2, RoundingMode.UP), new TicketPricingService().getTicketPriceWithDiscount(showing));
     }
 }

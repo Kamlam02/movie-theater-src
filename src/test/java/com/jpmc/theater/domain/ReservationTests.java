@@ -1,5 +1,6 @@
 package com.jpmc.theater.domain;
 
+import com.jpmc.theater.service.TicketPricingService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,8 @@ public class ReservationTests {
                 1,
                 LocalDateTime.now()
         );
-        Assertions.assertEquals(new Reservation(customer, showing, 3).totalFee(), BigDecimal.valueOf(37.5));
+        Reservation reservation = new Reservation(customer, showing, 3);
+        reservation.setTotalFee(new TicketPricingService().calculateTotalFee(reservation));
+        Assertions.assertEquals(reservation.getTotalFee(), BigDecimal.valueOf(28.5));
     }
 }
