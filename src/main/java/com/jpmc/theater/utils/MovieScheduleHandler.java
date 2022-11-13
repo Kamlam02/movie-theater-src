@@ -8,7 +8,6 @@ import com.jpmc.theater.domain.Movie;
 import com.jpmc.theater.domain.Showing;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -33,21 +32,6 @@ public class MovieScheduleHandler {
         );
     }
 
-    public static void printShowingsText(List<Showing> showings) {
-        String bar = "===================================================";
-        System.out.println(LocalDateProvider.getInstance().currentDate());
-        System.out.println(bar);
-        showings.forEach(s ->
-                System.out.println(s.getSequenceOfTheDay() + ": "
-                        + s.getShowStartTime() + " "
-                        + s.getMovie().getTitle() + " "
-                        + humanReadableFormat(s.getMovie().getRunningTime())
-                        + " $"
-                        + s.getMovie().getTicketPrice().setScale(2, RoundingMode.UP))
-        );
-        System.out.println(bar);
-    }
-
     public static void printShowingsJson(List<Showing> showings) {
         ObjectMapper objectMapper = JsonMapper.builder().addModule(new JavaTimeModule())
                 .build();
@@ -57,6 +41,25 @@ public class MovieScheduleHandler {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static void printShowingsText(List<Showing> showings) {
+        String bar = "===================================================";
+        System.out.println(LocalDateProvider.getInstance().currentDate());
+        System.out.println(bar);
+        showings.forEach(s ->
+                System.out.println(getShowingReadableString(s))
+        );
+        System.out.println(bar);
+    }
+
+    public static String getShowingReadableString(Showing showing) {
+        return showing.getSequenceOfTheDay() + ": "
+                + showing.getShowStartTime() + " "
+                + showing.getMovie().getTitle() + " "
+                + humanReadableFormat(showing.getMovie().getRunningTime())
+                + " $"
+                + showing.getMovie().getTicketPrice();
     }
 
     private static String humanReadableFormat(Duration duration) {

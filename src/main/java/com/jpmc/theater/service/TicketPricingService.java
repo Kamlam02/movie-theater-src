@@ -5,6 +5,7 @@ import com.jpmc.theater.domain.Showing;
 import com.jpmc.theater.utils.LocalDateProvider;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Map;
@@ -21,45 +22,45 @@ public class TicketPricingService {
 
     public BigDecimal calculateTotalFee(Reservation reservation) {
         Showing showing = reservation.getShowing();
-        return getTicketPriceWithDiscount(showing).multiply(BigDecimal.valueOf(reservation.getAudienceCount()));
+        return getTicketPriceWithDiscount(showing).multiply(BigDecimal.valueOf(reservation.getAudienceCount())).setScale(2, RoundingMode.UP);
     }
 
     public BigDecimal getTicketPriceWithDiscount(Showing showing) {
-        return showing.getMovie().getTicketPrice().subtract(getDiscount(showing));
+        return showing.getMovie().getTicketPrice().subtract(getDiscount(showing)).setScale(2, RoundingMode.UP);
     }
 
-    private BigDecimal getDiscount(Showing showing) {
+    protected BigDecimal getDiscount(Showing showing) {
         BigDecimal maxShowVsSpecDiscount = getMaxPercentageDiscount(showing);
         BigDecimal sequenceDiscount = getSequenceDiscount(showing.getSequenceOfTheDay());
         return maxShowVsSpecDiscount.max(sequenceDiscount);
     }
 
-    private BigDecimal getMaxPercentageDiscount(Showing showing) {
+    protected BigDecimal getMaxPercentageDiscount(Showing showing) {
         BigDecimal showingTimeDiscount = getShowingTimeDiscount(showing);
         return showingTimeDiscount.compareTo(BigDecimal.ZERO) > 0
                 ? showingTimeDiscount
                 : getSpecialDiscount(showing.getMovie().getSpecialCode(), showing.getMovie().getTicketPrice());
     }
 
-    private BigDecimal getShowingTimeDiscount(Showing showing) {
+    protected BigDecimal getShowingTimeDiscount(Showing showing) {
         BigDecimal showingTimeDiscount = BigDecimal.ZERO;
         LocalDateTime showStartTime = showing.getShowStartTime();
         boolean isBetweenDiscountTimeRange = showStartTime.isAfter(START_DISCOUNT_TIME_RANGE) && showStartTime.isBefore(END_DISCOUNT_TIME_RANGE);
         if (isBetweenDiscountTimeRange) {
-            showingTimeDiscount = showing.getMovie().getTicketPrice().multiply(BigDecimal.valueOf(0.25));
+            showingTimeDiscount = showing.getMovie().getTicketPrice().multiply(BigDecimal.valueOf(0.25)).setScale(2, RoundingMode.DOWN);
         }
         return showingTimeDiscount;
     }
 
-    private BigDecimal getSpecialDiscount(int specialCode, BigDecimal ticketPrice) {
+    protected BigDecimal getSpecialDiscount(int specialCode, BigDecimal ticketPrice) {
         BigDecimal specialDiscount = BigDecimal.ZERO;
         if (MOVIE_CODE_SPECIAL == specialCode) {
-            specialDiscount = ticketPrice.multiply(BigDecimal.valueOf(0.2));
+            specialDiscount = ticketPrice.multiply(BigDecimal.valueOf(0.2)).setScale(2, RoundingMode.DOWN);
         }
         return specialDiscount;
     }
 
-    private BigDecimal getSequenceDiscount(int showSequence) {
+    protected BigDecimal getSequenceDiscount(int showSequence) {
         return SEQUENCE_DISCOUNT_RATE.getOrDefault(showSequence, BigDecimal.ZERO);
     }
 }
