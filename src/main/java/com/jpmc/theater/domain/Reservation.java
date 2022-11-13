@@ -10,7 +10,6 @@ public class Reservation {
     private final Customer customer;
     private final Showing showing;
     private final int audienceCount;
-
     @Setter
     private BigDecimal totalFee;
 
