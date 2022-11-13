@@ -1,4 +1,4 @@
-package com.jpmc.theater.service;
+package com.jpmc.theater.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jpmc.theater.domain.Movie;
 import com.jpmc.theater.domain.Showing;
-import com.jpmc.theater.utils.LocalDateProvider;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

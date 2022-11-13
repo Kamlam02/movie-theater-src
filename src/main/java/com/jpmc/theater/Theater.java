@@ -3,7 +3,7 @@ package com.jpmc.theater;
 import com.jpmc.theater.domain.Customer;
 import com.jpmc.theater.domain.Reservation;
 import com.jpmc.theater.domain.Showing;
-import com.jpmc.theater.service.MovieScheduleHandler;
+import com.jpmc.theater.utils.MovieScheduleHandler;
 import com.jpmc.theater.service.TicketPricingService;
 import com.jpmc.theater.utils.LocalDateProvider;
 
@@ -29,9 +29,8 @@ public class Theater {
     }
 
     public void printSchedule() {
-        MovieScheduleHandler movieScheduleHandler = new MovieScheduleHandler();
-        movieScheduleHandler.printShowingsText(showings);
-        movieScheduleHandler.printShowingsJson(showings);
+        MovieScheduleHandler.printShowingsText(showings);
+        MovieScheduleHandler.printShowingsJson(showings);
     }
 
     public static void main(String[] args) {
