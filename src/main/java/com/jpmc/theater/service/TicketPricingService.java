@@ -12,8 +12,8 @@ import java.util.Map;
 
 public class TicketPricingService {
     private static final int MOVIE_CODE_SPECIAL = 1;
-    private static final LocalDateTime START_DISCOUNT_TIME_RANGE = LocalDateTime.of(LocalDateProvider.getInstance().currentDate(), LocalTime.of(11, 0));
-    private static final LocalDateTime END_DISCOUNT_TIME_RANGE = LocalDateTime.of(LocalDateProvider.getInstance().currentDate(), LocalTime.of(16, 0));
+    private static final LocalDateTime START_DISCOUNT_TIME_RANGE = LocalDateTime.of(LocalDateProvider.getInstance().currentDate(), LocalTime.of(10, 59));
+    private static final LocalDateTime END_DISCOUNT_TIME_RANGE = LocalDateTime.of(LocalDateProvider.getInstance().currentDate(), LocalTime.of(16, 1));
     private static final Map<Integer, BigDecimal> SEQUENCE_DISCOUNT_RATE = Map.of(
             1, BigDecimal.valueOf(3),
             2, BigDecimal.valueOf(2),

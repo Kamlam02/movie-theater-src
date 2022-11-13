@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.jpmc.theater.domain.Movie;
 import com.jpmc.theater.domain.Showing;
+import com.jpmc.theater.service.TicketPricingService;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.Duration;
@@ -14,7 +16,14 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+@NoArgsConstructor
 public class MovieScheduleHandler {
+    private ObjectMapper objectMapper = JsonMapper.builder().addModule(new JavaTimeModule()).build();
+
+    protected MovieScheduleHandler(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
+
     public static List<Showing> initShowings(LocalDateProvider localDateProvider) {
         Movie spiderMan = new Movie("Spider-Man: No Way Home", Duration.ofMinutes(90), BigDecimal.valueOf(12.5), 1);
         Movie turningRed = new Movie("Turning Red", Duration.ofMinutes(85), BigDecimal.valueOf(11), 0);
@@ -32,9 +41,7 @@ public class MovieScheduleHandler {
         );
     }
 
-    public static void printShowingsJson(List<Showing> showings) {
-        ObjectMapper objectMapper = JsonMapper.builder().addModule(new JavaTimeModule())
-                .build();
+    public void printShowingsJson(List<Showing> showings) {
         try {
             String jsonOutput = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(showings);
             System.out.println(jsonOutput);
@@ -59,16 +66,23 @@ public class MovieScheduleHandler {
                 + showing.getMovie().getTitle() + " "
                 + humanReadableFormat(showing.getMovie().getRunningTime())
                 + " $"
-                + showing.getMovie().getTicketPrice();
+                + showing.getMovie().getTicketPrice()
+                + showDiscountedPrice(showing);
+//
     }
 
-    private static String humanReadableFormat(Duration duration) {
+    private static String showDiscountedPrice(Showing showing) {
+        BigDecimal discountedTicketPrice = new TicketPricingService().getTicketPriceWithDiscount(showing);
+        return showing.getMovie().getTicketPrice().equals(discountedTicketPrice) ? "" : " discounted price $" + discountedTicketPrice;
+    }
+
+    protected static String humanReadableFormat(Duration duration) {
         long hour = duration.toHours();
         long remainingMin = duration.toMinutes() - TimeUnit.HOURS.toMinutes(duration.toHours());
         return String.format("(%s hour%s %s minute%s)", hour, handlePlural(hour), remainingMin, handlePlural(remainingMin));
     }
 
-    private static String handlePlural(long value) {
+    protected static String handlePlural(long value) {
         return value == 1 ? "" : "s";
     }
 }

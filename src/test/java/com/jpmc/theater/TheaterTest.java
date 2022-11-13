@@ -10,7 +10,6 @@ import com.jpmc.theater.domain.Showing;
 import com.jpmc.theater.utils.LocalDateProvider;
 import com.jpmc.theater.utils.MovieScheduleHandler;
 import com.jpmc.theater.utils.PricingUtil;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -18,8 +17,7 @@ import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class TheaterTest {
 
@@ -27,9 +25,9 @@ class TheaterTest {
 
     @Test
     void Given_NewReservationRequest_When_Reserve_Then_ReturnReservationPrice() {
-        BigDecimal expectedValue = PricingUtil.getBigDecimal(40);
+        BigDecimal expectedValue = PricingUtil.getBigDecimal(32);
         Customer john = new Customer("John Doe");
-        Reservation reservation = underTest.reserve(john, 2, 4);
+        Reservation reservation = underTest.reserve(john, 1, 4);
         assertEquals(expectedValue, reservation.getTotalFee());
     }
 
@@ -43,8 +41,11 @@ class TheaterTest {
 
     @Test
     void Given_InvalidSequence_When_Reserve_Then_ThrowIllegalStateException() {
+        String expectedValue = "not able to find any showing for given sequence ";
         Customer john = new Customer("John Doe");
-        Assertions.assertThrows(IllegalStateException.class, () ->underTest.reserve(john, 0, 4));
+        IllegalStateException exception = assertThrows(IllegalStateException.class, () ->underTest.reserve(john, 0, 4));
+        String actualMessage = exception.getMessage();
+        assertTrue(actualMessage.contains(expectedValue));
     }
 
     @Test

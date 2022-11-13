@@ -30,7 +30,7 @@ public class Theater {
 
     public void printSchedule() {
         MovieScheduleHandler.printShowingsText(showings);
-        MovieScheduleHandler.printShowingsJson(showings);
+        new MovieScheduleHandler().printShowingsJson(showings);
     }
 
     public static void main(String[] args) {
