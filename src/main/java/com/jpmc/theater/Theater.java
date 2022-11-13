@@ -12,8 +12,8 @@ import java.util.List;
 public class Theater {
     private final List<Showing> showings;
 
-    public Theater(LocalDateProvider localDateProvider) {
-        this.showings = MovieScheduleHandler.initShowings(localDateProvider);
+    public Theater() {
+        this.showings = MovieScheduleHandler.initShowings(LocalDateProvider.getInstance());
     }
 
     public Reservation reserve(Customer customer, int sequence, int howManyTickets) {
@@ -35,7 +35,7 @@ public class Theater {
     }
 
     public static void main(String[] args) {
-        Theater theater = new Theater(LocalDateProvider.getInstance());
+        Theater theater = new Theater();
         theater.printSchedule();
     }
 }

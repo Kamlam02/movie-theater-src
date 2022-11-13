@@ -34,7 +34,7 @@ public class MovieScheduleHandler {
         );
     }
 
-    public void printShowingsText(List<Showing> showings) {
+    public static void printShowingsText(List<Showing> showings) {
         String bar = "===================================================";
         System.out.println(LocalDateProvider.getInstance().currentDate());
         System.out.println(bar);
@@ -44,12 +44,12 @@ public class MovieScheduleHandler {
                         + s.getMovie().getTitle() + " "
                         + humanReadableFormat(s.getMovie().getRunningTime())
                         + " $"
-                        + s.getMovieFee().setScale(2, RoundingMode.UP))
+                        + s.getMovie().getTicketPrice().setScale(2, RoundingMode.UP))
         );
         System.out.println(bar);
     }
 
-    public void printShowingsJson(List<Showing> showings) {
+    public static void printShowingsJson(List<Showing> showings) {
         ObjectMapper objectMapper = JsonMapper.builder().addModule(new JavaTimeModule())
                 .build();
         try {
@@ -60,13 +60,13 @@ public class MovieScheduleHandler {
         }
     }
 
-    private String humanReadableFormat(Duration duration) {
+    private static String humanReadableFormat(Duration duration) {
         long hour = duration.toHours();
         long remainingMin = duration.toMinutes() - TimeUnit.HOURS.toMinutes(duration.toHours());
         return String.format("(%s hour%s %s minute%s)", hour, handlePlural(hour), remainingMin, handlePlural(remainingMin));
     }
 
-    private String handlePlural(long value) {
+    private static String handlePlural(long value) {
         return value == 1 ? "" : "s";
     }
 }
